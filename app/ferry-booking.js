@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import LocationSelector from '../components/LocationSelector';
 
 export default function FerryBookingScreen() {
   const [tripType, setTripType] = useState('single');
@@ -13,7 +14,9 @@ export default function FerryBookingScreen() {
   const [from, setFrom] = useState('');
   const [options, setOptions] = useState('');
   const [date, setDate] = useState(new Date());
+  const [returnDate, setReturnDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showReturnDatePicker, setShowReturnDatePicker] = useState(false);
 
   const increment = (setter, value) => {
     setter(value + 1);
@@ -35,6 +38,13 @@ export default function FerryBookingScreen() {
     setShowDatePicker(Platform.OS === 'ios');
     if (event.type === 'set' && selectedDate) {
       setDate(selectedDate);
+    }
+  };
+
+  const onReturnDateChange = (event, selectedDate) => {
+    setShowReturnDatePicker(Platform.OS === 'ios');
+    if (event.type === 'set' && selectedDate) {
+      setReturnDate(selectedDate);
     }
   };
 
@@ -218,13 +228,12 @@ export default function FerryBookingScreen() {
                   <Ionicons name="location" size={20} color="#ea580c" />
                   <Text style={styles.inputLabel}>من</Text>
                 </View>
-                <TextInput
-                  placeholder="من.."
+                <LocationSelector
                   value={from}
-                  onChangeText={setFrom}
-                  style={styles.input}
-                  textAlign="right"
-                  placeholderTextColor="#9ca3af"
+                  onSelect={setFrom}
+                  placeholder="ابحث من (مثال: مسقط، صلالة)"
+                  iconColor="#ea580c"
+                  label="اختر نقطة المغادرة"
                 />
               </View>
 
@@ -244,11 +253,13 @@ export default function FerryBookingScreen() {
                 />
               </View>
 
-              {/* Date */}
+              {/* Departure Date */}
               <View style={styles.inputGroup}>
                 <View style={styles.inputLabelRow}>
                   <Ionicons name="calendar" size={20} color="#9333ea" />
-                  <Text style={styles.inputLabel}>التاريخ</Text>
+                  <Text style={styles.inputLabel}>
+                    {tripType === 'return' ? 'تاريخ المغادرة' : 'التاريخ'}
+                  </Text>
                 </View>
                 <TouchableOpacity
                   onPress={() => setShowDatePicker(true)}
@@ -268,6 +279,33 @@ export default function FerryBookingScreen() {
                   />
                 )}
               </View>
+
+              {/* Return Date - Only show if round trip */}
+              {tripType === 'return' && (
+                <View style={styles.inputGroup}>
+                  <View style={styles.inputLabelRow}>
+                    <Ionicons name="calendar-outline" size={20} color="#9333ea" />
+                    <Text style={styles.inputLabel}>تاريخ العودة</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => setShowReturnDatePicker(true)}
+                    style={styles.input}>
+                    <Text style={[styles.dateText, !returnDate && styles.datePlaceholder]}>
+                      {formatDate(returnDate)}
+                    </Text>
+                  </TouchableOpacity>
+                  {showReturnDatePicker && (
+                    <DateTimePicker
+                      value={returnDate}
+                      mode="date"
+                      display="default"
+                      onChange={onReturnDateChange}
+                      minimumDate={date}
+                      locale="ar"
+                    />
+                  )}
+                </View>
+              )}
             </View>
 
             {/* Search Button */}

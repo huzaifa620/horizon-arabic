@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import LocationSelector from '../components/LocationSelector';
 
 export default function AirBookingScreen() {
   const [tripType, setTripType] = useState('single');
@@ -232,13 +233,12 @@ export default function AirBookingScreen() {
                   <Ionicons name="airplane-outline" size={20} color="#7c3aed" />
                   <Text style={styles.inputLabel}>من</Text>
                 </View>
-                <TextInput
-                  placeholder="اختر مدينة المغادرة..."
+                <LocationSelector
                   value={from}
-                  onChangeText={setFrom}
-                  style={styles.input}
-                  textAlign="right"
-                  placeholderTextColor="#9ca3af"
+                  onSelect={setFrom}
+                  placeholder="ابحث من (مثال: مسقط، صلالة)"
+                  iconColor="#7c3aed"
+                  label="اختر مدينة المغادرة"
                 />
               </View>
 
@@ -248,13 +248,12 @@ export default function AirBookingScreen() {
                   <Ionicons name="airplane" size={20} color="#7c3aed" />
                   <Text style={styles.inputLabel}>إلى</Text>
                 </View>
-                <TextInput
-                  placeholder="اختر مدينة الوصول..."
+                <LocationSelector
                   value={to}
-                  onChangeText={setTo}
-                  style={styles.input}
-                  textAlign="right"
-                  placeholderTextColor="#9ca3af"
+                  onSelect={setTo}
+                  placeholder="ابحث إلى (مثال: مسقط، صلالة)"
+                  iconColor="#7c3aed"
+                  label="اختر مدينة الوصول"
                 />
               </View>
 

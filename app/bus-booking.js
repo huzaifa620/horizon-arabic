@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import LocationSelector from '../components/LocationSelector';
 
 export default function BusBookingScreen() {
   const [tripType, setTripType] = useState('single');
@@ -13,7 +14,9 @@ export default function BusBookingScreen() {
   const [fromZone, setFromZone] = useState('');
   const [toZone, setToZone] = useState('');
   const [date, setDate] = useState(new Date());
+  const [returnDate, setReturnDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showReturnDatePicker, setShowReturnDatePicker] = useState(false);
 
   const increment = (setter, value) => {
     setter(value + 1);
@@ -35,6 +38,13 @@ export default function BusBookingScreen() {
     setShowDatePicker(Platform.OS === 'ios');
     if (event.type === 'set' && selectedDate) {
       setDate(selectedDate);
+    }
+  };
+
+  const onReturnDateChange = (event, selectedDate) => {
+    setShowReturnDatePicker(Platform.OS === 'ios');
+    if (event.type === 'set' && selectedDate) {
+      setReturnDate(selectedDate);
     }
   };
 
@@ -223,13 +233,12 @@ export default function BusBookingScreen() {
                   <Ionicons name="location" size={20} color="#2563eb" />
                   <Text style={styles.inputLabel}>من</Text>
                 </View>
-                <TextInput
-                  placeholder="ابحث من"
+                <LocationSelector
                   value={fromZone}
-                  onChangeText={setFromZone}
-                  style={styles.input}
-                  textAlign="right"
-                  placeholderTextColor="#9ca3af"
+                  onSelect={setFromZone}
+                  placeholder="ابحث من (مثال: مسقط، صلالة)"
+                  iconColor="#2563eb"
+                  label="اختر نقطة المغادرة"
                 />
               </View>
 
@@ -239,21 +248,22 @@ export default function BusBookingScreen() {
                   <Ionicons name="location" size={20} color="#ef4444" />
                   <Text style={styles.inputLabel}>إلى</Text>
                 </View>
-                <TextInput
-                  placeholder="ابحث إلى"
+                <LocationSelector
                   value={toZone}
-                  onChangeText={setToZone}
-                  style={styles.input}
-                  textAlign="right"
-                  placeholderTextColor="#9ca3af"
+                  onSelect={setToZone}
+                  placeholder="ابحث إلى (مثال: مسقط، صلالة)"
+                  iconColor="#ef4444"
+                  label="اختر نقطة الوصول"
                 />
               </View>
 
-              {/* Date */}
+              {/* Departure Date */}
               <View style={styles.inputGroup}>
                 <View style={styles.inputLabelRow}>
                   <Ionicons name="calendar" size={20} color="#9333ea" />
-                  <Text style={styles.inputLabel}>التاريخ</Text>
+                  <Text style={styles.inputLabel}>
+                    {tripType === 'return' ? 'تاريخ المغادرة' : 'التاريخ'}
+                  </Text>
                 </View>
                 <TouchableOpacity
                   onPress={() => setShowDatePicker(true)}
@@ -273,6 +283,33 @@ export default function BusBookingScreen() {
                   />
                 )}
               </View>
+
+              {/* Return Date - Only show if round trip */}
+              {tripType === 'return' && (
+                <View style={styles.inputGroup}>
+                  <View style={styles.inputLabelRow}>
+                    <Ionicons name="calendar-outline" size={20} color="#9333ea" />
+                    <Text style={styles.inputLabel}>تاريخ العودة</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => setShowReturnDatePicker(true)}
+                    style={styles.input}>
+                    <Text style={[styles.dateText, !returnDate && styles.datePlaceholder]}>
+                      {formatDate(returnDate)}
+                    </Text>
+                  </TouchableOpacity>
+                  {showReturnDatePicker && (
+                    <DateTimePicker
+                      value={returnDate}
+                      mode="date"
+                      display="default"
+                      onChange={onReturnDateChange}
+                      minimumDate={date}
+                      locale="ar"
+                    />
+                  )}
+                </View>
+              )}
             </View>
 
             {/* Search Button */}
