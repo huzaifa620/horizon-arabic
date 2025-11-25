@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function BusBookingScreen() {
   const [tripType, setTripType] = useState('single');
@@ -11,7 +12,8 @@ export default function BusBookingScreen() {
   const [infants, setInfants] = useState(0);
   const [fromZone, setFromZone] = useState('');
   const [toZone, setToZone] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   const increment = (setter, value) => {
     setter(value + 1);
@@ -19,6 +21,21 @@ export default function BusBookingScreen() {
 
   const decrement = (setter, value) => {
     if (value > 0) setter(value - 1);
+  };
+
+  const formatDate = (date) => {
+    if (!date) return 'يوم-شهر-سنة';
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
+  const onDateChange = (event, selectedDate) => {
+    setShowDatePicker(Platform.OS === 'ios');
+    if (event.type === 'set' && selectedDate) {
+      setDate(selectedDate);
+    }
   };
 
   return (
@@ -207,7 +224,7 @@ export default function BusBookingScreen() {
                   <Text style={styles.inputLabel}>من</Text>
                 </View>
                 <TextInput
-                  placeholder="ابحث عن منطقة المغادرة..."
+                  placeholder="ابحث من"
                   value={fromZone}
                   onChangeText={setFromZone}
                   style={styles.input}
@@ -223,7 +240,7 @@ export default function BusBookingScreen() {
                   <Text style={styles.inputLabel}>إلى</Text>
                 </View>
                 <TextInput
-                  placeholder="ابحث عن منطقة الوصول..."
+                  placeholder="ابحث إلى"
                   value={toZone}
                   onChangeText={setToZone}
                   style={styles.input}
@@ -238,14 +255,23 @@ export default function BusBookingScreen() {
                   <Ionicons name="calendar" size={20} color="#9333ea" />
                   <Text style={styles.inputLabel}>التاريخ</Text>
                 </View>
-                <TextInput
-                  placeholder="يوم-شهر-سنة"
-                  value={date}
-                  onChangeText={setDate}
-                  style={styles.input}
-                  textAlign="right"
-                  placeholderTextColor="#9ca3af"
-                />
+                <TouchableOpacity
+                  onPress={() => setShowDatePicker(true)}
+                  style={styles.input}>
+                  <Text style={[styles.dateText, !date && styles.datePlaceholder]}>
+                    {formatDate(date)}
+                  </Text>
+                </TouchableOpacity>
+                {showDatePicker && (
+                  <DateTimePicker
+                    value={date}
+                    mode="date"
+                    display="default"
+                    onChange={onDateChange}
+                    minimumDate={new Date()}
+                    locale="ar"
+                  />
+                )}
               </View>
             </View>
 
@@ -521,5 +547,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '800',
     textAlign: 'right',
+  },
+  dateText: {
+    fontSize: 16,
+    color: '#111827',
+    textAlign: 'right',
+  },
+  datePlaceholder: {
+    color: '#9ca3af',
   },
 });

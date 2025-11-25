@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TextInput, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function AirBookingScreen() {
   const [tripType, setTripType] = useState('single');
@@ -11,8 +12,10 @@ export default function AirBookingScreen() {
   const [infants, setInfants] = useState(0);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const [departDate, setDepartDate] = useState('');
-  const [returnDate, setReturnDate] = useState('');
+  const [departDate, setDepartDate] = useState(new Date());
+  const [returnDate, setReturnDate] = useState(new Date());
+  const [showDepartDatePicker, setShowDepartDatePicker] = useState(false);
+  const [showReturnDatePicker, setShowReturnDatePicker] = useState(false);
 
   const increment = (setter, value) => {
     setter(value + 1);
@@ -20,6 +23,28 @@ export default function AirBookingScreen() {
 
   const decrement = (setter, value) => {
     if (value > 0) setter(value - 1);
+  };
+
+  const formatDate = (date) => {
+    if (!date) return 'يوم-شهر-سنة';
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
+  const onDepartDateChange = (event, selectedDate) => {
+    setShowDepartDatePicker(Platform.OS === 'ios');
+    if (event.type === 'set' && selectedDate) {
+      setDepartDate(selectedDate);
+    }
+  };
+
+  const onReturnDateChange = (event, selectedDate) => {
+    setShowReturnDatePicker(Platform.OS === 'ios');
+    if (event.type === 'set' && selectedDate) {
+      setReturnDate(selectedDate);
+    }
   };
 
   return (
@@ -239,14 +264,23 @@ export default function AirBookingScreen() {
                   <Ionicons name="calendar" size={20} color="#9333ea" />
                   <Text style={styles.inputLabel}>تاريخ المغادرة</Text>
                 </View>
-                <TextInput
-                  placeholder="يوم-شهر-سنة"
-                  value={departDate}
-                  onChangeText={setDepartDate}
-                  style={styles.input}
-                  textAlign="right"
-                  placeholderTextColor="#9ca3af"
-                />
+                <TouchableOpacity
+                  onPress={() => setShowDepartDatePicker(true)}
+                  style={styles.input}>
+                  <Text style={[styles.dateText, !departDate && styles.datePlaceholder]}>
+                    {formatDate(departDate)}
+                  </Text>
+                </TouchableOpacity>
+                {showDepartDatePicker && (
+                  <DateTimePicker
+                    value={departDate}
+                    mode="date"
+                    display="default"
+                    onChange={onDepartDateChange}
+                    minimumDate={new Date()}
+                    locale="ar"
+                  />
+                )}
               </View>
 
               {/* Return Date - Only show if return trip */}
@@ -256,14 +290,23 @@ export default function AirBookingScreen() {
                     <Ionicons name="calendar-outline" size={20} color="#9333ea" />
                     <Text style={styles.inputLabel}>تاريخ العودة</Text>
                   </View>
-                  <TextInput
-                    placeholder="يوم-شهر-سنة"
-                    value={returnDate}
-                    onChangeText={setReturnDate}
-                    style={styles.input}
-                    textAlign="right"
-                    placeholderTextColor="#9ca3af"
-                  />
+                  <TouchableOpacity
+                    onPress={() => setShowReturnDatePicker(true)}
+                    style={styles.input}>
+                    <Text style={[styles.dateText, !returnDate && styles.datePlaceholder]}>
+                      {formatDate(returnDate)}
+                    </Text>
+                  </TouchableOpacity>
+                  {showReturnDatePicker && (
+                    <DateTimePicker
+                      value={returnDate}
+                      mode="date"
+                      display="default"
+                      onChange={onReturnDateChange}
+                      minimumDate={departDate}
+                      locale="ar"
+                    />
+                  )}
                 </View>
               )}
             </View>
@@ -547,6 +590,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '800',
     textAlign: 'right',
+  },
+  dateText: {
+    fontSize: 16,
+    color: '#111827',
+    textAlign: 'right',
+  },
+  datePlaceholder: {
+    color: '#9ca3af',
   },
 });
 
