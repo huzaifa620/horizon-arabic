@@ -25,32 +25,28 @@ export default function RootLayout() {
             name="bus-booking" 
             options={{ 
               presentation: 'card', 
-              title: 'تذكرة الحافلة',
-              headerTitleAlign: 'right',
+              headerShown: false,
             }} 
           />
           <Stack.Screen 
             name="air-booking" 
             options={{ 
               presentation: 'card', 
-              title: 'تذكرة الطيران',
-              headerTitleAlign: 'right',
+              headerShown: false,
             }} 
           />
           <Stack.Screen 
             name="tourism" 
             options={{ 
               presentation: 'card', 
-              title: 'السياحة',
-              headerTitleAlign: 'right',
+              headerShown: false,
             }} 
           />
           <Stack.Screen 
             name="ferry-booking" 
             options={{ 
               presentation: 'card', 
-              title: 'حجز رحلة عبارة',
-              headerTitleAlign: 'right',
+              headerShown: false,
             }} 
           />
           <Stack.Screen 

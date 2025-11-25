@@ -48,7 +48,7 @@ export default function AirBookingScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
+    <SafeAreaView className="flex-1" edges={['top']} style={{ backgroundColor: '#4c1d95' }}>
       <ScrollView 
         className="flex-1" 
         contentContainerStyle={{ direction: 'rtl', paddingBottom: 100 }}
@@ -73,7 +73,7 @@ export default function AirBookingScreen() {
           </View>
         </LinearGradient>
 
-        <View className="px-6 py-6 -mt-10">
+        <View className="px-6" style={{ marginTop: -30 }}>
           <View style={styles.formCard}>
             {/* Trip Type Section */}
             <View style={styles.section}>
@@ -333,9 +333,9 @@ export default function AirBookingScreen() {
 
 const styles = StyleSheet.create({
   heroContainer: {
-    height: 240,
     paddingTop: 20,
-    paddingBottom: 40,
+    paddingBottom: 50,
+    minHeight: 200,
   },
   heroContent: {
     flex: 1,
@@ -372,8 +372,12 @@ const styles = StyleSheet.create({
   },
   formCard: {
     backgroundColor: '#fff',
-    borderRadius: 32,
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
     padding: 28,
+    paddingTop: 38,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 20 },
     shadowOpacity: 0.15,
