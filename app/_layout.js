@@ -43,6 +43,13 @@ export default function RootLayout() {
             }} 
           />
           <Stack.Screen 
+            name="tourism-tickets" 
+            options={{ 
+              presentation: 'card', 
+              headerShown: false,
+            }} 
+          />
+          <Stack.Screen 
             name="ferry-booking" 
             options={{ 
               presentation: 'card', 

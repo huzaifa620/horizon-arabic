@@ -113,8 +113,8 @@ export default function HomeScreen() {
             </TouchableOpacity>
           </Link>
 
-          {/* 2. Air Ticket Card */}
-          <Link href="/air-booking" asChild>
+          {/* 2. Tourism & Tickets Card */}
+          <Link href="/tourism-tickets" asChild>
             <TouchableOpacity activeOpacity={0.95} style={styles.serviceCardModern}>
               <View style={styles.serviceCardInner}>
                 <View style={styles.serviceIconWrapper}>
@@ -126,9 +126,9 @@ export default function HomeScreen() {
                 </View>
                 
                 <View style={styles.serviceContent}>
-                  <Text style={styles.serviceTitleModern}>تذكرة الطيران</Text>
+                  <Text style={styles.serviceTitleModern}>السياحة والتذاكر</Text>
                   <Text style={styles.serviceDescModern}>
-                    احجز تذكرتك للرحلات الجوية
+                    اكتشف الوجهات السياحية واحجز تذاكرك
                   </Text>
                   
                   <View style={styles.serviceActionRow}>
@@ -140,36 +140,6 @@ export default function HomeScreen() {
                 </View>
               </View>
               <View style={[styles.cardAccentBlue, { backgroundColor: '#7c3aed' }]} />
-            </TouchableOpacity>
-          </Link>
-
-          {/* 3. Tourism Card */}
-          <Link href="/tourism" asChild>
-            <TouchableOpacity activeOpacity={0.95} style={styles.serviceCardModern}>
-              <View style={styles.serviceCardInner}>
-                <View style={styles.serviceIconWrapper}>
-                  <LinearGradient
-                    colors={['#ea580c', '#f97316', '#fb923c']}
-                    style={styles.serviceIconGradient}>
-                    <Ionicons name="map" size={40} color="#fff" />
-                  </LinearGradient>
-                </View>
-                
-                <View style={styles.serviceContent}>
-                  <Text style={styles.serviceTitleModern}>السياحة</Text>
-                  <Text style={styles.serviceDescModern}>
-                    اكتشف أجمل الوجهات السياحية في عمان
-                  </Text>
-                  
-                  <View style={styles.serviceActionRow}>
-                    <Text style={[styles.serviceActionText, { color: '#ea580c' }]}>استكشف الآن</Text>
-                    <View style={[styles.serviceArrow, { backgroundColor: '#fed7aa' }]}>
-                      <Ionicons name="arrow-back" size={18} color="#ea580c" />
-                    </View>
-                  </View>
-                </View>
-              </View>
-              <View style={[styles.cardAccentBlue, { backgroundColor: '#ea580c' }]} />
             </TouchableOpacity>
           </Link>
         </View>

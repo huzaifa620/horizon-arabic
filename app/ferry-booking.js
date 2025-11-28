@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import LocationSelector from '../components/LocationSelector';
+import BookingSummaryModal from '../components/BookingSummaryModal';
 
 export default function FerryBookingScreen() {
   const [tripType, setTripType] = useState('single');
@@ -17,6 +17,7 @@ export default function FerryBookingScreen() {
   const [returnDate, setReturnDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showReturnDatePicker, setShowReturnDatePicker] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
 
   const increment = (setter, value) => {
     setter(value + 1);
@@ -228,12 +229,13 @@ export default function FerryBookingScreen() {
                   <Ionicons name="location" size={20} color="#ea580c" />
                   <Text style={styles.inputLabel}>من</Text>
                 </View>
-                <LocationSelector
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="أدخل نقطة المغادرة"
+                  placeholderTextColor="#9ca3af"
                   value={from}
-                  onSelect={setFrom}
-                  placeholder="ابحث من (مثال: مسقط، صلالة)"
-                  iconColor="#ea580c"
-                  label="اختر نقطة المغادرة"
+                  onChangeText={setFrom}
+                  textAlign="right"
                 />
               </View>
 
@@ -310,6 +312,7 @@ export default function FerryBookingScreen() {
 
             {/* Search Button */}
             <TouchableOpacity 
+              onPress={() => setShowSummary(true)}
               activeOpacity={0.9}
               style={styles.searchButton}>
               <LinearGradient
@@ -324,6 +327,22 @@ export default function FerryBookingScreen() {
           </View>
         </View>
       </ScrollView>
+
+      <BookingSummaryModal
+        visible={showSummary}
+        onClose={() => setShowSummary(false)}
+        bookingData={{
+          tripType,
+          adults,
+          children,
+          infants,
+          from,
+          to: options || '',
+          departDate: date,
+          returnDate: tripType === 'return' ? returnDate : null,
+        }}
+        type="ferry"
+      />
     </SafeAreaView>
   );
 }
@@ -549,6 +568,15 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   input: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 18,
+    fontSize: 16,
+    borderWidth: 2,
+    borderColor: '#e5e7eb',
+    color: '#111827',
+  },
+  textInput: {
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 18,

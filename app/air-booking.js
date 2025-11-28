@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import LocationSelector from '../components/LocationSelector';
+import BookingSummaryModal from '../components/BookingSummaryModal';
 
 export default function AirBookingScreen() {
   const [tripType, setTripType] = useState('single');
@@ -17,6 +17,7 @@ export default function AirBookingScreen() {
   const [returnDate, setReturnDate] = useState(new Date());
   const [showDepartDatePicker, setShowDepartDatePicker] = useState(false);
   const [showReturnDatePicker, setShowReturnDatePicker] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
 
   const increment = (setter, value) => {
     setter(value + 1);
@@ -233,12 +234,13 @@ export default function AirBookingScreen() {
                   <Ionicons name="airplane-outline" size={20} color="#7c3aed" />
                   <Text style={styles.inputLabel}>من</Text>
                 </View>
-                <LocationSelector
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="أدخل مدينة المغادرة"
+                  placeholderTextColor="#9ca3af"
                   value={from}
-                  onSelect={setFrom}
-                  placeholder="ابحث من (مثال: مسقط، صلالة)"
-                  iconColor="#7c3aed"
-                  label="اختر مدينة المغادرة"
+                  onChangeText={setFrom}
+                  textAlign="right"
                 />
               </View>
 
@@ -248,12 +250,13 @@ export default function AirBookingScreen() {
                   <Ionicons name="airplane" size={20} color="#7c3aed" />
                   <Text style={styles.inputLabel}>إلى</Text>
                 </View>
-                <LocationSelector
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="أدخل مدينة الوصول"
+                  placeholderTextColor="#9ca3af"
                   value={to}
-                  onSelect={setTo}
-                  placeholder="ابحث إلى (مثال: مسقط، صلالة)"
-                  iconColor="#7c3aed"
-                  label="اختر مدينة الوصول"
+                  onChangeText={setTo}
+                  textAlign="right"
                 />
               </View>
 
@@ -312,6 +315,7 @@ export default function AirBookingScreen() {
 
             {/* Search Button */}
             <TouchableOpacity 
+              onPress={() => setShowSummary(true)}
               activeOpacity={0.9}
               style={styles.searchButton}>
               <LinearGradient
@@ -326,6 +330,22 @@ export default function AirBookingScreen() {
           </View>
         </View>
       </ScrollView>
+
+      <BookingSummaryModal
+        visible={showSummary}
+        onClose={() => setShowSummary(false)}
+        bookingData={{
+          tripType,
+          adults,
+          children,
+          infants,
+          from,
+          to,
+          departDate,
+          returnDate: tripType === 'return' ? returnDate : null,
+        }}
+        type="ticket"
+      />
     </SafeAreaView>
   );
 }
@@ -563,6 +583,15 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   input: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 18,
+    fontSize: 16,
+    borderWidth: 2,
+    borderColor: '#e5e7eb',
+    color: '#111827',
+  },
+  textInput: {
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 18,

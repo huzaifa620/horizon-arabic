@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import LocationSelector from '../components/LocationSelector';
+import BookingSummaryModal from '../components/BookingSummaryModal';
 
 export default function BusBookingScreen() {
   const [tripType, setTripType] = useState('single');
@@ -17,6 +17,7 @@ export default function BusBookingScreen() {
   const [returnDate, setReturnDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showReturnDatePicker, setShowReturnDatePicker] = useState(false);
+  const [showSummary, setShowSummary] = useState(false);
 
   const increment = (setter, value) => {
     setter(value + 1);
@@ -233,12 +234,13 @@ export default function BusBookingScreen() {
                   <Ionicons name="location" size={20} color="#2563eb" />
                   <Text style={styles.inputLabel}>من</Text>
                 </View>
-                <LocationSelector
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="أدخل نقطة المغادرة"
+                  placeholderTextColor="#9ca3af"
                   value={fromZone}
-                  onSelect={setFromZone}
-                  placeholder="ابحث من (مثال: مسقط، صلالة)"
-                  iconColor="#2563eb"
-                  label="اختر نقطة المغادرة"
+                  onChangeText={setFromZone}
+                  textAlign="right"
                 />
               </View>
 
@@ -248,12 +250,13 @@ export default function BusBookingScreen() {
                   <Ionicons name="location" size={20} color="#ef4444" />
                   <Text style={styles.inputLabel}>إلى</Text>
                 </View>
-                <LocationSelector
+                <TextInput
+                  style={styles.textInput}
+                  placeholder="أدخل نقطة الوصول"
+                  placeholderTextColor="#9ca3af"
                   value={toZone}
-                  onSelect={setToZone}
-                  placeholder="ابحث إلى (مثال: مسقط، صلالة)"
-                  iconColor="#ef4444"
-                  label="اختر نقطة الوصول"
+                  onChangeText={setToZone}
+                  textAlign="right"
                 />
               </View>
 
@@ -314,6 +317,7 @@ export default function BusBookingScreen() {
 
             {/* Search Button */}
             <TouchableOpacity 
+              onPress={() => setShowSummary(true)}
               activeOpacity={0.9}
               style={styles.searchButton}>
               <LinearGradient
@@ -328,6 +332,22 @@ export default function BusBookingScreen() {
           </View>
         </View>
       </ScrollView>
+
+      <BookingSummaryModal
+        visible={showSummary}
+        onClose={() => setShowSummary(false)}
+        bookingData={{
+          tripType,
+          adults,
+          children,
+          infants,
+          from: fromZone,
+          to: toZone,
+          departDate: date,
+          returnDate: tripType === 'return' ? returnDate : null,
+        }}
+        type="bus"
+      />
     </SafeAreaView>
   );
 }
@@ -558,6 +578,15 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   input: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 18,
+    fontSize: 16,
+    borderWidth: 2,
+    borderColor: '#e5e7eb',
+    color: '#111827',
+  },
+  textInput: {
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 18,
