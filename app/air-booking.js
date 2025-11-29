@@ -241,6 +241,9 @@ export default function AirBookingScreen() {
                   value={from}
                   onChangeText={setFrom}
                   textAlign="right"
+                  autoComplete="off"
+                  keyboardType="default"
+                  returnKeyType="next"
                 />
               </View>
 
@@ -257,6 +260,9 @@ export default function AirBookingScreen() {
                   value={to}
                   onChangeText={setTo}
                   textAlign="right"
+                  autoComplete="off"
+                  keyboardType="default"
+                  returnKeyType="done"
                 />
               </View>
 

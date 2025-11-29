@@ -236,6 +236,9 @@ export default function FerryBookingScreen() {
                   value={from}
                   onChangeText={setFrom}
                   textAlign="right"
+                  autoComplete="off"
+                  keyboardType="default"
+                  returnKeyType="next"
                 />
               </View>
 
@@ -252,6 +255,9 @@ export default function FerryBookingScreen() {
                   style={styles.input}
                   textAlign="right"
                   placeholderTextColor="#9ca3af"
+                  autoComplete="off"
+                  keyboardType="default"
+                  returnKeyType="done"
                 />
               </View>
 

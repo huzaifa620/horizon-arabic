@@ -241,6 +241,9 @@ export default function BusBookingScreen() {
                   value={fromZone}
                   onChangeText={setFromZone}
                   textAlign="right"
+                  autoComplete="off"
+                  keyboardType="default"
+                  returnKeyType="next"
                 />
               </View>
 
@@ -257,6 +260,9 @@ export default function BusBookingScreen() {
                   value={toZone}
                   onChangeText={setToZone}
                   textAlign="right"
+                  autoComplete="off"
+                  keyboardType="default"
+                  returnKeyType="done"
                 />
               </View>
 

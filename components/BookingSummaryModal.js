@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Modal, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Modal, TouchableOpacity, StyleSheet, ScrollView, I18nManager } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -25,7 +25,7 @@ export default function BookingSummaryModal({ visible, onClose, bookingData, typ
       transparent={true}
       onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
-        <View style={styles.modalContent}>
+        <View style={styles.modalContent} collapsable={false}>
           {/* Header */}
           <View style={styles.modalHeader}>
             <View style={styles.headerIconContainer}>
@@ -152,7 +152,7 @@ export default function BookingSummaryModal({ visible, onClose, bookingData, typ
 
             {/* Note */}
             <View style={styles.noteBox}>
-              <Ionicons name="information-circle" size={20} color="#2563eb" style={{ marginRight: 8 }} />
+              <Ionicons name="information-circle" size={20} color="#2563eb" style={{ marginLeft: 8 }} />
               <Text style={styles.noteText}>
                 This is a communication request. Our staff will contact you shortly to complete the booking.
               </Text>
@@ -168,8 +168,8 @@ export default function BookingSummaryModal({ visible, onClose, bookingData, typ
               <LinearGradient
                 colors={['#2563eb', '#3b82f6']}
                 style={styles.closeButtonGradient}>
+                <Ionicons name="checkmark" size={20} color="#fff" style={{ marginLeft: 8 }} />
                 <Text style={styles.closeButtonText}>Close</Text>
-                <Ionicons name="checkmark" size={20} color="#fff" style={{ marginRight: 8 }} />
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -219,10 +219,12 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     color: '#111827',
     marginBottom: 8,
+    textAlign: 'center',
   },
   modalSubtitle: {
     fontSize: 16,
     color: '#6b7280',
+    textAlign: 'center',
   },
   scrollContent: {
     maxHeight: 400,
@@ -236,12 +238,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 12,
+    justifyContent: 'flex-start',
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '800',
     color: '#111827',
     marginLeft: 8,
+    textAlign: 'left',
+    flex: 0,
   },
   infoBox: {
     backgroundColor: '#f9fafb',
@@ -254,56 +259,79 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#374151',
+    textAlign: 'left',
   },
   infoSubtext: {
     fontSize: 14,
     color: '#6b7280',
     marginTop: 4,
+    textAlign: 'left',
   },
   routeRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 8,
   },
   routeLabel: {
     fontSize: 14,
     fontWeight: '600',
     color: '#6b7280',
+    textAlign: 'left',
+    flex: 0,
+    minWidth: 60,
   },
   routeValue: {
     fontSize: 16,
     fontWeight: '700',
     color: '#111827',
+    textAlign: 'right',
+    flex: 1,
+    marginLeft: 12,
   },
   passengerRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 8,
   },
   passengerLabel: {
     fontSize: 14,
     fontWeight: '600',
     color: '#6b7280',
+    textAlign: 'left',
+    flex: 0,
+    minWidth: 120,
   },
   passengerValue: {
     fontSize: 16,
     fontWeight: '700',
     color: '#111827',
+    textAlign: 'right',
+    flex: 0,
+    marginLeft: 12,
   },
   dateRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 8,
   },
   dateLabel: {
     fontSize: 14,
     fontWeight: '600',
     color: '#6b7280',
+    textAlign: 'left',
+    flex: 0,
+    minWidth: 80,
   },
   dateValue: {
     fontSize: 16,
     fontWeight: '700',
     color: '#111827',
+    textAlign: 'right',
+    flex: 0,
+    marginLeft: 12,
   },
   noteBox: {
     flexDirection: 'row',
@@ -313,12 +341,14 @@ const styles = StyleSheet.create({
     margin: 20,
     borderWidth: 1,
     borderColor: '#bfdbfe',
+    alignItems: 'flex-start',
   },
   noteText: {
     flex: 1,
     fontSize: 14,
     color: '#1e40af',
     lineHeight: 20,
+    textAlign: 'left',
   },
   modalFooter: {
     padding: 20,
@@ -340,6 +370,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '800',
+    marginRight: 8,
   },
 });
 

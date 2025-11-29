@@ -8,7 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import BookingSummaryModal from '../components/BookingSummaryModal';
 
 export default function TourismTicketsScreen() {
-  const [activeTab, setActiveTab] = useState('tourism'); // 'tourism' or 'tickets'
+  const [activeTab, setActiveTab] = useState('tickets'); // 'tourism' or 'tickets'
   const [showSummary, setShowSummary] = useState(false);
   const [selectedPackageId, setSelectedPackageId] = useState(null);
   
@@ -370,6 +370,9 @@ export default function TourismTicketsScreen() {
                     value={from}
                     onChangeText={setFrom}
                     textAlign="right"
+                    autoComplete="off"
+                    keyboardType="default"
+                    returnKeyType="next"
                   />
                 </View>
 
@@ -385,6 +388,9 @@ export default function TourismTicketsScreen() {
                     value={to}
                     onChangeText={setTo}
                     textAlign="right"
+                    autoComplete="off"
+                    keyboardType="default"
+                    returnKeyType="done"
                   />
                 </View>
 
