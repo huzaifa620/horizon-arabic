@@ -1,31 +1,24 @@
-import React, { useEffect } from 'react';
-import { View, Text, Modal, TouchableOpacity, StyleSheet, ScrollView, I18nManager, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { default as React, useEffect } from 'react';
+import {
+  Modal,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native';
 
 export default function BookingSummaryModal({ visible, onClose, bookingData, type = 'ticket' }) {
-  if (!bookingData) return null;
-
-  // Force LTR layout for English modal
+  // Keep this if you previously relied on toggling RTL (we won't force global RTL here).
   useEffect(() => {
-    if (Platform.OS !== 'web' && visible) {
-      const originalIsRTL = I18nManager.isRTL;
-      if (originalIsRTL) {
-        I18nManager.forceRTL(false);
-        if (Platform.OS === 'android') {
-          I18nManager.swapLeftAndRightInRTL(false);
-        }
-      }
-      return () => {
-        if (originalIsRTL) {
-          I18nManager.forceRTL(true);
-          if (Platform.OS === 'android') {
-            I18nManager.swapLeftAndRightInRTL(true);
-          }
-        }
-      };
-    }
+    // no global forceRTL changes here — just keeping original logic safe
   }, [visible]);
+
+  if (!bookingData) return null;
 
   const formatDateEnglish = (date) => {
     if (!date) return 'Not selected';
@@ -40,12 +33,8 @@ export default function BookingSummaryModal({ visible, onClose, bookingData, typ
   };
 
   return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={onClose}>
-      <View style={styles.modalOverlay}>
+    <Modal visible={visible} animationType="slide" transparent={true} onRequestClose={onClose}>
+      <SafeAreaView style={styles.modalOverlay}>
         <View style={styles.modalContent}>
           {/* Header */}
           <View style={styles.modalHeader}>
@@ -56,7 +45,7 @@ export default function BookingSummaryModal({ visible, onClose, bookingData, typ
             <Text style={styles.modalSubtitle}>Review your booking details</Text>
           </View>
 
-          <ScrollView style={styles.scrollContent} showsVerticalScrollIndicator={false}>
+          <ScrollView style={styles.scrollContent} contentContainerStyle={styles.scrollContentContainer} showsVerticalScrollIndicator={false}>
             {/* Booking Type */}
             <View style={styles.section}>
               <View style={styles.sectionHeader}>
@@ -64,7 +53,15 @@ export default function BookingSummaryModal({ visible, onClose, bookingData, typ
                 <Text style={styles.sectionTitle}>Booking Type</Text>
               </View>
               <View style={styles.infoBox}>
-                <Text style={styles.infoText}>{type === 'ticket' ? 'Ticket Booking' : type === 'bus' ? 'Bus Ticket' : type === 'ferry' ? 'Ferry Ticket' : 'Tourism Package'}</Text>
+                <Text style={styles.infoText}>
+                  {type === 'ticket'
+                    ? 'Ticket Booking'
+                    : type === 'bus'
+                    ? 'Bus Ticket'
+                    : type === 'ferry'
+                    ? 'Ferry Ticket'
+                    : 'Tourism Package'}
+                </Text>
               </View>
             </View>
 
@@ -164,9 +161,7 @@ export default function BookingSummaryModal({ visible, onClose, bookingData, typ
                 </View>
                 <View style={styles.infoBox}>
                   <Text style={styles.infoText}>{bookingData.packageTitle}</Text>
-                  {bookingData.packageDescription && (
-                    <Text style={styles.infoSubtext}>{bookingData.packageDescription}</Text>
-                  )}
+                  {bookingData.packageDescription && <Text style={styles.infoSubtext}>{bookingData.packageDescription}</Text>}
                 </View>
               </View>
             )}
@@ -174,28 +169,21 @@ export default function BookingSummaryModal({ visible, onClose, bookingData, typ
             {/* Note */}
             <View style={styles.noteBox}>
               <Ionicons name="information-circle" size={20} color="#2563eb" style={{ marginLeft: 8 }} />
-              <Text style={styles.noteText}>
-                This is a communication request. Our staff will contact you shortly to complete the booking.
-              </Text>
+              <Text style={styles.noteText}>This is a communication request. Our staff will contact you shortly to complete the booking.</Text>
             </View>
           </ScrollView>
 
           {/* Footer */}
           <View style={styles.modalFooter}>
-            <TouchableOpacity
-              onPress={onClose}
-              activeOpacity={0.9}
-              style={styles.closeButton}>
-              <LinearGradient
-                colors={['#2563eb', '#3b82f6']}
-                style={styles.closeButtonGradient}>
-                <Ionicons name="checkmark" size={20} color="#fff" style={{ marginRight: 8 }} />
+            <TouchableOpacity onPress={onClose} activeOpacity={0.9} style={styles.closeButton}>
+              <LinearGradient colors={['#2563eb', '#3b82f6']} style={styles.closeButtonGradient}>
+                <Ionicons name="checkmark" size={20} color="#fff" style={{ marginLeft: 8 }} />
                 <Text style={styles.closeButtonText}>Close</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
         </View>
-      </View>
+      </SafeAreaView>
     </Modal>
   );
 }
@@ -206,26 +194,31 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20,
+    paddingVertical: Platform.OS === 'android' ? 24 : 20,
+    paddingHorizontal: 12,
   },
   modalContent: {
     backgroundColor: '#fff',
     borderRadius: 28,
     width: '100%',
     maxWidth: 500,
-    maxHeight: '90%',
+    maxHeight: '85%',
+    alignSelf: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 20 },
     shadowOpacity: 0.3,
     shadowRadius: 40,
     elevation: 20,
-    ...(Platform.OS === 'web' && {
-      direction: 'ltr',
-    }),
+    overflow: 'hidden',
+    flexDirection: 'column',
+
+    // FORCE LTR — ensures left-aligned layout always
+    writingDirection: 'ltr',
+    direction: 'ltr',
   },
   modalHeader: {
     alignItems: 'center',
-    padding: 24,
+    padding: 20,
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
   },
@@ -236,25 +229,32 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 16,
+    marginBottom: 12,
   },
   modalTitle: {
-    fontSize: 28,
+    fontSize: 26,
     fontWeight: '900',
     color: '#111827',
-    marginBottom: 8,
-    textAlign: 'center',
+    marginBottom: 6,
+    textAlign: 'left',
+    alignSelf: 'center', // title centered visually while text remains left-aligned internally
   },
   modalSubtitle: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#6b7280',
-    textAlign: 'center',
+    textAlign: 'left',
+    alignSelf: 'center',
   },
   scrollContent: {
-    maxHeight: 400,
+    // allow the scrollview to take available space
+    flexGrow: 0,
+  },
+  scrollContentContainer: {
+    paddingBottom: 12,
   },
   section: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#f3f4f6',
   },
@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#111827',
-    textAlign: 'right',
+    textAlign: 'left',
     flex: 1,
     marginLeft: 12,
   },
@@ -328,7 +328,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#111827',
-    textAlign: 'right',
+    textAlign: 'left',
     marginLeft: 12,
   },
   dateRow: {
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#111827',
-    textAlign: 'right',
+    textAlign: 'left',
     marginLeft: 12,
   },
   noteBox: {
@@ -369,16 +369,17 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   modalFooter: {
-    padding: 20,
+    padding: 16,
     borderTopWidth: 1,
     borderTopColor: '#e5e7eb',
+    backgroundColor: '#fff',
   },
   closeButton: {
-    borderRadius: 16,
+    borderRadius: 12,
     overflow: 'hidden',
   },
   closeButtonGradient: {
-    paddingVertical: 16,
+    paddingVertical: 12,
     paddingHorizontal: 24,
     flexDirection: 'row',
     alignItems: 'center',
@@ -391,4 +392,3 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
 });
-
