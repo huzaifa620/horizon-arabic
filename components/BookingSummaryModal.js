@@ -1,10 +1,31 @@
-import React from 'react';
-import { View, Text, Modal, TouchableOpacity, StyleSheet, ScrollView, I18nManager } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, Modal, TouchableOpacity, StyleSheet, ScrollView, I18nManager, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function BookingSummaryModal({ visible, onClose, bookingData, type = 'ticket' }) {
   if (!bookingData) return null;
+
+  // Force LTR layout for English modal
+  useEffect(() => {
+    if (Platform.OS !== 'web' && visible) {
+      const originalIsRTL = I18nManager.isRTL;
+      if (originalIsRTL) {
+        I18nManager.forceRTL(false);
+        if (Platform.OS === 'android') {
+          I18nManager.swapLeftAndRightInRTL(false);
+        }
+      }
+      return () => {
+        if (originalIsRTL) {
+          I18nManager.forceRTL(true);
+          if (Platform.OS === 'android') {
+            I18nManager.swapLeftAndRightInRTL(true);
+          }
+        }
+      };
+    }
+  }, [visible]);
 
   const formatDateEnglish = (date) => {
     if (!date) return 'Not selected';
@@ -25,7 +46,7 @@ export default function BookingSummaryModal({ visible, onClose, bookingData, typ
       transparent={true}
       onRequestClose={onClose}>
       <View style={styles.modalOverlay}>
-        <View style={styles.modalContent} collapsable={false}>
+        <View style={styles.modalContent}>
           {/* Header */}
           <View style={styles.modalHeader}>
             <View style={styles.headerIconContainer}>
@@ -168,7 +189,7 @@ export default function BookingSummaryModal({ visible, onClose, bookingData, typ
               <LinearGradient
                 colors={['#2563eb', '#3b82f6']}
                 style={styles.closeButtonGradient}>
-                <Ionicons name="checkmark" size={20} color="#fff" style={{ marginLeft: 8 }} />
+                <Ionicons name="checkmark" size={20} color="#fff" style={{ marginRight: 8 }} />
                 <Text style={styles.closeButtonText}>Close</Text>
               </LinearGradient>
             </TouchableOpacity>
@@ -198,6 +219,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 40,
     elevation: 20,
+    ...(Platform.OS === 'web' && {
+      direction: 'ltr',
+    }),
   },
   modalHeader: {
     alignItems: 'center',
@@ -246,7 +270,6 @@ const styles = StyleSheet.create({
     color: '#111827',
     marginLeft: 8,
     textAlign: 'left',
-    flex: 0,
   },
   infoBox: {
     backgroundColor: '#f9fafb',
@@ -278,7 +301,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#6b7280',
     textAlign: 'left',
-    flex: 0,
     minWidth: 60,
   },
   routeValue: {
@@ -300,7 +322,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#6b7280',
     textAlign: 'left',
-    flex: 0,
     minWidth: 120,
   },
   passengerValue: {
@@ -308,7 +329,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#111827',
     textAlign: 'right',
-    flex: 0,
     marginLeft: 12,
   },
   dateRow: {
@@ -322,7 +342,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#6b7280',
     textAlign: 'left',
-    flex: 0,
     minWidth: 80,
   },
   dateValue: {
@@ -330,7 +349,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: '#111827',
     textAlign: 'right',
-    flex: 0,
     marginLeft: 12,
   },
   noteBox: {
@@ -370,7 +388,7 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: '800',
-    marginRight: 8,
+    marginLeft: 8,
   },
 });
 

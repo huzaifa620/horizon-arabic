@@ -99,11 +99,12 @@ export default function TourismTicketsScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1" edges={['top']} style={{ backgroundColor: '#7c3aed' }}>
+    <SafeAreaView className="flex-1" edges={['top']} style={{ backgroundColor: '#fff' }}>
       <ScrollView 
         className="flex-1" 
-        contentContainerStyle={{ direction: 'rtl', paddingBottom: 100 }}
-        showsVerticalScrollIndicator={false}>
+        contentContainerStyle={{ direction: 'rtl', paddingBottom: 100, backgroundColor: '#fff' }}
+        showsVerticalScrollIndicator={false}
+        style={{ backgroundColor: '#fff' }}>
         
         {/* Header */}
         <LinearGradient
@@ -508,6 +509,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     color: '#fff',
     marginBottom: 8,
+    textAlign: 'center',
     textShadowColor: 'rgba(0, 0, 0, 0.3)',
     textShadowOffset: { width: 0, height: 2 },
     textShadowRadius: 4,
