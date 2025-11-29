@@ -2,17 +2,3 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Force Arabic keyboard on web for RTL text inputs */
-input[dir="rtl"],
-textarea[dir="rtl"] {
-  direction: rtl;
-  text-align: right;
-}
-
-/* Ensure Arabic locale for inputs with lang="ar" */
-input[lang="ar"],
-textarea[lang="ar"] {
-  direction: rtl;
-  text-align: right;
-}
-

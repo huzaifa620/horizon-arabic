@@ -239,15 +239,6 @@ export default function FerryBookingScreen() {
                   autoComplete="off"
                   keyboardType="default"
                   returnKeyType="next"
-                  textContentType={Platform.OS === 'ios' ? 'none' : undefined}
-                  {...(Platform.OS === 'web' && {
-                    // @ts-ignore - Web-specific props
-                    inputMode: 'text',
-                    // @ts-ignore - Web-specific props
-                    lang: 'ar',
-                    // @ts-ignore - Web-specific props
-                    dir: 'rtl',
-                  })}
                 />
               </View>
 
