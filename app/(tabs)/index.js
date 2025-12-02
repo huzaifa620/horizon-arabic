@@ -5,6 +5,7 @@ import { Link } from 'expo-router';
 import React from 'react';
 import { Dimensions, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import WebIcon from '../../components/WebIcon';
 
 const { width } = Dimensions.get('window');
 
@@ -79,7 +80,7 @@ export default function HomeScreen() {
           <View style={styles.welcomeCardModern}>
             <View style={styles.welcomeHeader}>
               <View style={styles.welcomeIcon}>
-                <Ionicons name="sparkles" size={24} color="#2563eb" />
+                <WebIcon name="sparkles" size={24} color="#2563eb" />
               </View>
               <Text style={styles.welcomeTitleModern}>
                 مرحباً بك
@@ -108,7 +109,7 @@ export default function HomeScreen() {
                   <LinearGradient
                     colors={['#2563eb', '#3b82f6', '#60a5fa']}
                     style={styles.serviceIconGradient}>
-                    <Ionicons name="bus" size={40} color="#fff" />
+                    <WebIcon name="bus" size={40} color="#fff" />
                   </LinearGradient>
                 </View>
                 
@@ -121,7 +122,7 @@ export default function HomeScreen() {
                   <View style={styles.serviceActionRow}>
                     <Text style={styles.serviceActionText}>احجز الآن</Text>
                     <View style={styles.serviceArrow}>
-                      <Ionicons name="arrow-back" size={18} color="#2563eb" />
+                      <WebIcon name="arrow-back" size={18} color="#2563eb" />
                     </View>
                   </View>
                 </View>
@@ -138,7 +139,7 @@ export default function HomeScreen() {
                   <LinearGradient
                     colors={['#7c3aed', '#8b5cf6', '#a78bfa']}
                     style={styles.serviceIconGradient}>
-                    <Ionicons name="airplane" size={40} color="#fff" />
+                    <WebIcon name="airplane" size={40} color="#fff" />
                   </LinearGradient>
                 </View>
                 
@@ -151,7 +152,7 @@ export default function HomeScreen() {
                   <View style={styles.serviceActionRow}>
                     <Text style={[styles.serviceActionText, { color: '#7c3aed' }]}>احجز الآن</Text>
                     <View style={[styles.serviceArrow, { backgroundColor: '#ede9fe' }]}>
-                      <Ionicons name="arrow-back" size={18} color="#7c3aed" />
+                      <WebIcon name="arrow-back" size={18} color="#7c3aed" />
                     </View>
                   </View>
                 </View>
@@ -174,7 +175,7 @@ export default function HomeScreen() {
               style={StyleSheet.absoluteFill}>
               <View style={styles.bannerContent}>
                 <View style={styles.bannerBadge}>
-                  <Ionicons name="star" size={20} color="#fbbf24" />
+                  <WebIcon name="star" size={20} color="#fbbf24" />
                   <Text style={styles.bannerBadgeText}>رحلة مميزة</Text>
                 </View>
                 <Text style={styles.bannerTitleModern}>
