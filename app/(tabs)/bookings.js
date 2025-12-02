@@ -1,17 +1,34 @@
 import React from 'react';
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function BookingsScreen() {
+  const Container = Platform.OS === 'web' ? View : SafeAreaView;
+  const containerProps = Platform.OS === 'web' 
+    ? { style: { flex: 1, backgroundColor: '#fafbfc', height: '100vh' } }
+    : { className: "flex-1", style: { backgroundColor: '#fafbfc' }, edges: ['top'] };
+  
   return (
-    <SafeAreaView className="flex-1" style={{ backgroundColor: '#fafbfc' }} edges={['top']}>
+    <Container {...containerProps}>
       <ScrollView 
-        className="flex-1" 
-        contentContainerStyle={{ direction: 'rtl', paddingBottom: 100 }}
-        showsVerticalScrollIndicator={false}>
+        style={Platform.OS === 'web' ? { 
+          height: '100vh',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          WebkitOverflowScrolling: 'touch',
+        } : { flex: 1 }}
+        contentContainerStyle={{ 
+          direction: 'rtl', 
+          paddingBottom: 100,
+          ...(Platform.OS === 'web' && {
+            minHeight: '100vh',
+          }),
+        }}
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={true}>
         
         {/* Modern Header */}
         <View style={styles.headerWrapper}>
@@ -115,7 +132,7 @@ export default function BookingsScreen() {
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </Container>
   );
 }
 

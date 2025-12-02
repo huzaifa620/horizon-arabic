@@ -49,12 +49,29 @@ export default function BusBookingScreen() {
     }
   };
 
+  const Container = Platform.OS === 'web' ? View : SafeAreaView;
+  const containerProps = Platform.OS === 'web' 
+    ? { style: { flex: 1, backgroundColor: '#0f172a', height: '100vh' } }
+    : { className: "flex-1", edges: ['top'], style: { backgroundColor: '#0f172a' } };
+  
   return (
-    <SafeAreaView className="flex-1" edges={['top']} style={{ backgroundColor: '#0f172a' }}>
+    <Container {...containerProps}>
       <ScrollView 
-        className="flex-1" 
-        contentContainerStyle={{ direction: 'rtl', paddingBottom: 100 }}
-        showsVerticalScrollIndicator={false}>
+        style={Platform.OS === 'web' ? { 
+          height: '100vh',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          WebkitOverflowScrolling: 'touch',
+        } : { flex: 1 }}
+        contentContainerStyle={{ 
+          direction: 'rtl', 
+          paddingBottom: 100,
+          ...(Platform.OS === 'web' && {
+            minHeight: '100vh',
+          }),
+        }}
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={true}>
         
         {/* Premium Hero Header */}
         <LinearGradient
@@ -354,7 +371,7 @@ export default function BusBookingScreen() {
         }}
         type="bus"
       />
-    </SafeAreaView>
+    </Container>
   );
 }
 

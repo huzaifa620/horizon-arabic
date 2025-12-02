@@ -98,13 +98,31 @@ export default function TourismTicketsScreen() {
     setShowSummary(true);
   };
 
+  const Container = Platform.OS === 'web' ? View : SafeAreaView;
+  const containerProps = Platform.OS === 'web' 
+    ? { style: { flex: 1, backgroundColor: '#fff', height: '100vh' } }
+    : { className: "flex-1", edges: ['top'], style: { backgroundColor: '#fff' } };
+  
   return (
-    <SafeAreaView className="flex-1" edges={['top']} style={{ backgroundColor: '#fff' }}>
+    <Container {...containerProps}>
       <ScrollView 
-        className="flex-1" 
-        contentContainerStyle={{ direction: 'rtl', paddingBottom: 100, backgroundColor: '#fff' }}
+        style={Platform.OS === 'web' ? { 
+          height: '100vh',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          WebkitOverflowScrolling: 'touch',
+          backgroundColor: '#fff',
+        } : { flex: 1, backgroundColor: '#fff' }}
+        contentContainerStyle={{ 
+          direction: 'rtl', 
+          paddingBottom: 100, 
+          backgroundColor: '#fff',
+          ...(Platform.OS === 'web' && {
+            minHeight: '100vh',
+          }),
+        }}
         showsVerticalScrollIndicator={false}
-        style={{ backgroundColor: '#fff' }}>
+        nestedScrollEnabled={true}>
         
         {/* Header */}
         <LinearGradient
@@ -481,7 +499,7 @@ export default function TourismTicketsScreen() {
         }}
         type={activeTab === 'tourism' ? 'tourism' : 'ticket'}
       />
-    </SafeAreaView>
+    </Container>
   );
 }
 

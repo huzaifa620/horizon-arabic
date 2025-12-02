@@ -52,11 +52,13 @@ div[class*="SafeAreaView"] {
   height: 70px !important;
 }
 
-/* Fix tab bar icons - ensure they render */
+/* Fix tab bar icons - ensure they render properly */
+nav[role="tablist"] svg,
+nav[role="tablist"] i,
+nav[aria-label*="Tab"] svg,
+nav[aria-label*="Tab"] i,
 [data-expo-router-tab-bar] svg,
-[data-expo-router-tab-bar] i,
-[data-expo-router-tab-bar] [class*="Ionicons"],
-[data-expo-router-tab-bar] [class*="icon"] {
+[data-expo-router-tab-bar] i {
   display: inline-block !important;
   visibility: visible !important;
   opacity: 1 !important;
@@ -64,9 +66,22 @@ div[class*="SafeAreaView"] {
   height: 26px !important;
   fill: currentColor !important;
   color: inherit !important;
+  font-size: 26px !important;
 }
 
-/* Ensure tab bar buttons are clickable */
+/* Ensure Ionicons render */
+i[class*="Ionicons"],
+span[class*="Ionicons"],
+svg[class*="Ionicons"] {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  font-size: 26px !important;
+}
+
+/* Ensure tab bar buttons are clickable and visible */
+nav[role="tablist"] button,
+nav[role="tablist"] [role="button"],
 [data-expo-router-tab-bar] button,
 [data-expo-router-tab-bar] [role="button"] {
   display: flex !important;
@@ -74,6 +89,9 @@ div[class*="SafeAreaView"] {
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  min-height: 60px !important;
 }
 
 /* Add padding to content to account for fixed tab bar */

@@ -49,12 +49,29 @@ export default function FerryBookingScreen() {
     }
   };
 
+  const Container = Platform.OS === 'web' ? View : SafeAreaView;
+  const containerProps = Platform.OS === 'web' 
+    ? { style: { flex: 1, backgroundColor: '#7c2d12', height: '100vh' } }
+    : { className: "flex-1", edges: ['top'], style: { backgroundColor: '#7c2d12' } };
+  
   return (
-    <SafeAreaView className="flex-1" edges={['top']} style={{ backgroundColor: '#7c2d12' }}>
+    <Container {...containerProps}>
       <ScrollView 
-        className="flex-1" 
-        contentContainerStyle={{ direction: 'rtl', paddingBottom: 100 }}
-        showsVerticalScrollIndicator={false}>
+        style={Platform.OS === 'web' ? { 
+          height: '100vh',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          WebkitOverflowScrolling: 'touch',
+        } : { flex: 1 }}
+        contentContainerStyle={{ 
+          direction: 'rtl', 
+          paddingBottom: 100,
+          ...(Platform.OS === 'web' && {
+            minHeight: '100vh',
+          }),
+        }}
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled={true}>
         
         {/* Premium Hero Header */}
         <LinearGradient
@@ -349,7 +366,7 @@ export default function FerryBookingScreen() {
         }}
         type="ferry"
       />
-    </SafeAreaView>
+    </Container>
   );
 }
 
