@@ -2,3 +2,89 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Web scrolling fixes - CRITICAL */
+html, body {
+  height: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#root {
+  height: 100vh !important;
+  width: 100% !important;
+  overflow: hidden !important;
+  position: relative !important;
+}
+
+/* Force ScrollView to work on web */
+div[role="main"] > div,
+div[data-testid="scroll-view"],
+div[class*="ScrollView"] {
+  height: 100% !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  position: relative !important;
+}
+
+/* Fix SafeAreaView on web */
+div[class*="SafeAreaView"] {
+  height: 100vh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Fix for tab bar on web - ensure it's always visible and icons render */
+[data-expo-router-tab-bar] {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+  background-color: #ffffff !important;
+  height: 70px !important;
+}
+
+/* Fix tab bar icons - ensure they render */
+[data-expo-router-tab-bar] svg,
+[data-expo-router-tab-bar] i,
+[data-expo-router-tab-bar] [class*="Ionicons"],
+[data-expo-router-tab-bar] [class*="icon"] {
+  display: inline-block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  width: 26px !important;
+  height: 26px !important;
+  fill: currentColor !important;
+  color: inherit !important;
+}
+
+/* Ensure tab bar buttons are clickable */
+[data-expo-router-tab-bar] button,
+[data-expo-router-tab-bar] [role="button"] {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+}
+
+/* Add padding to content to account for fixed tab bar */
+[data-expo-router-content] {
+  padding-bottom: 80px !important;
+  min-height: calc(100vh - 80px) !important;
+}
+
+/* Ensure safe area view works on web */
+[data-expo-router-safe-area] {
+  min-height: 100vh !important;
+  padding-bottom: 80px !important;
+  overflow: hidden !important;
+}

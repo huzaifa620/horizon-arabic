@@ -9,7 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.huzaifa620.horizonarabic",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -48,6 +52,12 @@
       "eas": {
         "projectId": "d2feb37c-5f26-4f6e-8b0b-a75dc8fade9e"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/d2feb37c-5f26-4f6e-8b0b-a75dc8fade9e"
     }
   }
 }
